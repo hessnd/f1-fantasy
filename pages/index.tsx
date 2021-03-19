@@ -46,7 +46,7 @@ const Home = ({ data }): JSX.Element => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch('http://ergast.com/api/f1/2021/next.json');
+  const res = await fetch('http://ergast.com/api/f1/current/next.json');
   const json = await res.json();
   const data = json.MRData.RaceTable;
 

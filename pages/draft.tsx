@@ -8,9 +8,9 @@ const Draft = ({ data }): JSX.Element => {
     <div className={styles.container}>
       <main className={styles.main}>
         <h1 className={styles.title}>Draft</h1>
-        {drivers.map((driver) => (
-          <div key={driver.driverId}>
-            <p>{driver.driverId}</p>
+        {drivers.map(({ driverId }) => (
+          <div key={driverId}>
+            <p>{driverId}</p>
           </div>
         ))}
       </main>
@@ -19,7 +19,7 @@ const Draft = ({ data }): JSX.Element => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch('https://ergast.com/api/f1/2021/next.json');
+  const res = await fetch('https://ergast.com/api/f1/current/next.json');
   const json = await res.json();
   const race = json.MRData.RaceTable.Races[0];
   const { round } = race;
