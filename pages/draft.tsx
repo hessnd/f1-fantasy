@@ -1,5 +1,6 @@
 import { GetServerSideProps } from 'next';
 import styles from '../styles/Home.module.css';
+import draftStyles from '../styles/Draft.module.css';
 
 const Draft = ({ data }): JSX.Element => {
   const drivers = data.Drivers;
@@ -9,9 +10,9 @@ const Draft = ({ data }): JSX.Element => {
       <main className={styles.main}>
         <h1 className={styles.title}>Draft</h1>
         {drivers.map(({ driverId }) => (
-          <div key={driverId}>
-            <p>{driverId}</p>
-          </div>
+          <a className={draftStyles.driverContainer} key={driverId}>
+            <span>{driverId}</span>
+          </a>
         ))}
       </main>
     </div>
