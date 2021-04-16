@@ -1,10 +1,28 @@
-import { GetServerSideProps } from 'next';
 import styles from '../styles/Home.module.css';
 import draftStyles from '../styles/Draft.module.css';
+import {
+  withAuthUser,
+  AuthAction,
+  withAuthUserTokenSSR,
+} from 'next-firebase-auth';
+import admin from '../utils/admin';
 
-const Draft = ({ data }): JSX.Element => {
-  const drivers = data.Drivers;
+interface Driver {
+  code: string;
+  dateOfBirth: string;
+  driverId: string;
+  familyName: string;
+  givenName: string;
+  nationality: string;
+  permanentNumber: string;
+  url: string;
+}
 
+type Props = {
+  drivers: [Driver];
+};
+
+const Draft: React.FC<Props> = ({ drivers }) => {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
@@ -18,20 +36,18 @@ const Draft = ({ data }): JSX.Element => {
     </div>
   );
 };
+export const getServerSideProps = withAuthUserTokenSSR({
+  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
+})(async () => {
+  const dbRef = admin.database().ref();
+  const snapshot = await dbRef
+    .child('seasons')
+    .child('2021')
+    .child('drivers')
+    .get();
+  return { props: { drivers: snapshot.exists() ? snapshot.val() : 'empty' } };
+});
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch('https://ergast.com/api/f1/current/next.json');
-  const json = await res.json();
-  const race = json.MRData.RaceTable.Races[0];
-  const { round } = race;
-
-  const driversRes = await fetch(
-    `https://ergast.com/api/f1/current/${round}/drivers.json`
-  );
-  const driversJson = await driversRes.json();
-  const driversData = driversJson.MRData.DriverTable;
-
-  return { props: { data: driversData } };
-};
-
-export default Draft;
+export default withAuthUser({
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+})(Draft);
