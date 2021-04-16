@@ -6,22 +6,21 @@ import {
   withAuthUserTokenSSR,
 } from 'next-firebase-auth';
 import admin from '../utils/admin';
-import DriverButton from '../components/DriverButton';
-import { Driver } from '../customTypings/dbTypes';
+import { Player } from '../customTypings/dbTypes';
 
 type Props = {
-  drivers: [Driver];
+  players: [Player];
 };
 
-const Draft: React.FC<Props> = ({ drivers }) => {
+const Standings: React.FC<Props> = ({ players }) => {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        <h1 className={styles.title}>Draft</h1>
-        {drivers.map((driver) => (
-          <div className={draftStyles.driverContainer} key={driver.driverId}>
-            <DriverButton driver={driver} />
-          </div>
+        <h1 className={styles.title}>Standings</h1>
+        {players.map(({ userId }) => (
+          <a className={draftStyles.driverContainer} key={userId}>
+            <span>{userId}</span>
+          </a>
         ))}
       </main>
     </div>
@@ -30,15 +29,15 @@ const Draft: React.FC<Props> = ({ drivers }) => {
 export const getServerSideProps = withAuthUserTokenSSR({
   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
 })(async () => {
-  const dbRef = await admin.database().ref();
+  const dbRef = admin.database().ref();
   const snapshot = await dbRef
     .child('seasons')
     .child('2021')
-    .child('drivers')
+    .child('players')
     .get();
-  return { props: { drivers: snapshot.exists() ? snapshot.val() : 'empty' } };
+  return { props: { players: snapshot.exists() ? snapshot.val() : 'empty' } };
 });
 
 export default withAuthUser({
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(Draft);
+})(Standings);
