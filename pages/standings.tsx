@@ -26,6 +26,7 @@ const Standings: React.FC<Props> = ({ players }) => {
     </div>
   );
 };
+
 export const getServerSideProps = withAuthUserTokenSSR({
   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
 })(async () => {
