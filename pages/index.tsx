@@ -1,11 +1,30 @@
 import { GetServerSideProps } from 'next';
-import { useAuthUser } from 'next-firebase-auth';
+import { useAuthUser, withAuthUser } from 'next-firebase-auth';
 import Head from 'next/head';
 import Link from 'next/link';
 import Header from '../components/Header';
 import styles from '../styles/Home.module.css';
+interface Race {
+  Circuit: {
+    Location: {
+      country: string;
+      lat: string;
+      long: string;
+      locality: string;
+    };
+    cirduitId: string;
+    circuitName: string;
+    url: string;
+  };
+  date: string;
+  raceName: string;
+  round: string;
+  season: string;
+  time: string;
+  url: string;
+}
 
-const Home = ({ nextRace }): JSX.Element => {
+const Home: React.FC<{ nextRace: Race }> = ({ nextRace }): JSX.Element => {
   const dateObj = new Date(`${nextRace.date}T${nextRace.time}`);
   const raceTime = dateObj.toTimeString();
   const raceDate = dateObj.toDateString();
@@ -59,4 +78,4 @@ export const getServerSideProps: GetServerSideProps = async () => {
   return { props: { nextRace } };
 };
 
-export default Home;
+export default withAuthUser()(Home);
