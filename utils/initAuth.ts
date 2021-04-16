@@ -1,3 +1,4 @@
+import './firebase';
 import { init } from 'next-firebase-auth';
 
 const TWELVE_DAYS_IN_MS = 12 * 60 * 60 * 24 * 1000;
