@@ -54,6 +54,9 @@ const Home: React.FC<{ nextRace: Race }> = ({ nextRace }): JSX.Element => {
         <Link href="/draft">
           <a>draft</a>
         </Link>
+        <Link href="/standings">
+          <a>standings</a>
+        </Link>
       </main>
 
       <footer className={styles.footer}>
