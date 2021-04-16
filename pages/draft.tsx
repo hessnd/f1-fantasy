@@ -30,7 +30,8 @@ const Draft: React.FC<Props> = ({ drivers }) => {
 export const getServerSideProps = withAuthUserTokenSSR({
   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
 })(async () => {
-  const dbRef = await admin.database().ref();
+  const db = admin.database();
+  const dbRef = await db.ref();
   const snapshot = await dbRef
     .child('seasons')
     .child('2021')
