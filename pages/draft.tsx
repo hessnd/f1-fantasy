@@ -1,5 +1,4 @@
 import styles from '../styles/Home.module.css';
-import draftStyles from '../styles/Draft.module.css';
 import {
   withAuthUser,
   AuthAction,
@@ -19,9 +18,7 @@ const Draft: React.FC<Props> = ({ drivers }) => {
       <main className={styles.main}>
         <h1 className={styles.title}>Draft</h1>
         {drivers.map((driver) => (
-          <div className={draftStyles.driverContainer} key={driver.driverId}>
-            <DriverButton driver={driver} />
-          </div>
+          <DriverButton key={driver.driverId} driver={driver} />
         ))}
       </main>
     </div>
