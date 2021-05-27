@@ -13,7 +13,7 @@ const styles = {
   },
 };
 
-const Auth = () => (
+const Auth: React.FC = () => (
   <div style={styles.content}>
     <h3>Sign in</h3>
     <div style={styles.textContainer}>
