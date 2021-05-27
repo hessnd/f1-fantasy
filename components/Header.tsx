@@ -1,60 +1,56 @@
 import React from 'react';
 import Link from 'next/link';
+import Head from 'next/head';
+import { Container, Navbar, Button } from 'react-bootstrap';
+import { useAuthUser, withAuthUser } from 'next-firebase-auth';
 
-const nfaDependencyVersion = require('../package.json').dependencies[
-  'next-firebase-auth'
-];
-const nextDependencyVersion = require('../package.json').dependencies.next;
+const Header: React.FC = (): JSX.Element => {
+  const { email, signOut } = useAuthUser();
 
-const styles = {
-  container: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    padding: 16,
-  },
-  versionsContainer: {
-    marginLeft: 0,
-    marginRight: 'auto',
-  },
-  button: {
-    marginLeft: 16,
-    cursor: 'pointer',
-  },
+  return (
+    <Navbar>
+      <Head>
+        <title>F1 Fantasy</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Container>
+        <Link href="/" passHref>
+          <Navbar.Brand>F1 Fantasy Draft</Navbar.Brand>
+        </Link>
+        <Navbar.Toggle />
+        <Navbar.Collapse className="justify-content-end">
+          <Navbar.Text>
+            {email ? (
+              <>
+                <p>Signed in as {email}</p>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => {
+                    signOut();
+                  }}
+                >
+                  Sign out
+                </Button>
+              </>
+            ) : (
+              <>
+                <p>You are not signed in.</p>
+                <Link href="/auth">
+                  <a>
+                    <Button type="button" variant="secondary" size="sm">
+                      Sign in
+                    </Button>
+                  </a>
+                </Link>
+              </>
+            )}
+          </Navbar.Text>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
 };
 
-const Header = ({ email, signOut }): JSX.Element => (
-  <div style={styles.container}>
-    <div style={styles.versionsContainer}>
-      <div>v{nfaDependencyVersion}</div>
-      <div>Next.js v{nextDependencyVersion}</div>
-    </div>
-    {email ? (
-      <>
-        <p>Signed in as {email}</p>
-        <button
-          type="button"
-          onClick={() => {
-            signOut();
-          }}
-          style={styles.button}
-        >
-          Sign out
-        </button>
-      </>
-    ) : (
-      <>
-        <p>You are not signed in.</p>
-        <Link href="/auth">
-          <a>
-            <button type="button" style={styles.button}>
-              Sign in
-            </button>
-          </a>
-        </Link>
-      </>
-    )}
-  </div>
-);
-
-export default Header;
+export default withAuthUser()(Header);

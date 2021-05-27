@@ -1,48 +1,20 @@
 import { GetServerSideProps } from 'next';
-import { useAuthUser, withAuthUser } from 'next-firebase-auth';
-import Head from 'next/head';
+import { withAuthUser } from 'next-firebase-auth';
 import Link from 'next/link';
-import Header from '../components/Header';
-import styles from '../styles/Home.module.css';
-interface Race {
-  Circuit: {
-    Location: {
-      country: string;
-      lat: string;
-      long: string;
-      locality: string;
-    };
-    cirduitId: string;
-    circuitName: string;
-    url: string;
-  };
-  date: string;
-  raceName: string;
-  round: string;
-  season: string;
-  time: string;
-  url: string;
-}
+import { Container, Button } from 'react-bootstrap';
+import { Race } from '../customTypings/dbTypes';
 
 const Home: React.FC<{ nextRace: Race }> = ({ nextRace }): JSX.Element => {
   const dateObj = new Date(`${nextRace.date}T${nextRace.time}`);
   const raceTime = dateObj.toTimeString();
   const raceDate = dateObj.toDateString();
 
-  const AuthUser = useAuthUser();
-
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>F1 Fantasy</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Header email={AuthUser.email} signOut={AuthUser.signOut} />
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>F1 Fantasy App</h1>
-        <h3 className={styles.subtitle}>Next Race</h3>
-        <p className={styles.description}>
+    <Container>
+      <main>
+        <h1>F1 Fantasy App</h1>
+        <h3>Next Race</h3>
+        <p className="text-center">
           Round {nextRace.round}
           <br />
           {nextRace.raceName}
@@ -51,25 +23,14 @@ const Home: React.FC<{ nextRace: Race }> = ({ nextRace }): JSX.Element => {
           <br />
           {raceTime}
         </p>
-        <Link href="/draft">
-          <a>draft</a>
+        <Link href="/draft" passHref>
+          <Button variant="outline-primary">draft</Button>
         </Link>
-        <Link href="/standings">
-          <a>standings</a>
+        <Link href="/standings" passHref>
+          <Button variant="outline-primary">standings</Button>
         </Link>
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
+    </Container>
   );
 };
 
