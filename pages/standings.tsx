@@ -1,5 +1,3 @@
-import styles from '../styles/Home.module.css';
-import draftStyles from '../styles/Draft.module.css';
 import {
   withAuthUser,
   AuthAction,
@@ -7,6 +5,7 @@ import {
 } from 'next-firebase-auth';
 import admin from '../utils/admin';
 import { Player } from '../customTypings/dbTypes';
+import { Container } from 'react-bootstrap';
 
 type Props = {
   players: [Player];
@@ -14,16 +13,16 @@ type Props = {
 
 const Standings: React.FC<Props> = ({ players }) => {
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>Standings</h1>
+    <Container>
+      <main>
+        <h1>Standings</h1>
         {players.map(({ userId }) => (
-          <a className={draftStyles.driverContainer} key={userId}>
+          <a key={userId}>
             <span>{userId}</span>
           </a>
         ))}
       </main>
-    </div>
+    </Container>
   );
 };
 

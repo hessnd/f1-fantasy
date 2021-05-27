@@ -8,7 +8,7 @@ const Header: React.FC = (): JSX.Element => {
   const { email, signOut } = useAuthUser();
 
   return (
-    <Navbar>
+    <Navbar expand="lg">
       <Head>
         <title>F1 Fantasy</title>
         <link rel="icon" href="/favicon.ico" />

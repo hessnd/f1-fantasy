@@ -1,4 +1,3 @@
-import styles from '../styles/Home.module.css';
 import {
   withAuthUser,
   AuthAction,
@@ -7,6 +6,7 @@ import {
 import admin from '../utils/admin';
 import DriverButton from '../components/DriverButton';
 import { Driver } from '../customTypings/dbTypes';
+import { Container, Row } from 'react-bootstrap';
 
 type Props = {
   drivers: [Driver];
@@ -14,14 +14,14 @@ type Props = {
 
 const Draft: React.FC<Props> = ({ drivers }) => {
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>Draft</h1>
-        {drivers.map((driver) => (
-          <DriverButton key={driver.driverId} driver={driver} />
-        ))}
-      </main>
-    </div>
+    <Container>
+      <h1 className="fs-1 fw-bold mb-4">Draft</h1>
+      {drivers.map((driver) => (
+        <Row key={driver.driverId} className="justify-content-center">
+          <DriverButton driver={driver} />
+        </Row>
+      ))}
+    </Container>
   );
 };
 export const getServerSideProps = withAuthUserTokenSSR({
